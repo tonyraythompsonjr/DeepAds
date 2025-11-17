@@ -1,6 +1,3 @@
-Here’s the full, cleaned-up `deepads.py` with the **Pillow 12–safe image code** (`textbbox` instead of `textsize`) and everything wired the same way as your snippet:
-
-```python
 import random
 from typing import List
 
