@@ -7,7 +7,7 @@ import streamlit as st
 # --------------------------------------------
 # CONFIGURATION AND SETUP
 # --------------------------------------------
-st.set_page_config(page_title="DeepAds – Micro-AI Ad Studio", layout="centered")
+st.set_page_config(page_title="DeepAds - Micro-AI Ad Studio", layout="centered")
 st.title("DeepAds: Micro-AI Ad Studio")
 st.write(
     """
@@ -31,20 +31,20 @@ def generate_copy(desc: str, tone: str, fw: str, trends: List[str]) -> str:
     desc = desc.strip().capitalize()
 
     if fw == "AIDA":
-        return f"""Attention: {product_name} – discover the {keyword.lower()} trend everyone's talking about!
+        return f"""Attention: {product_name} - discover the {keyword.lower()} trend everyone is talking about!
 
 Interest: With a {tone.lower()} touch, our {product_name} helps solve your biggest challenge.
 
 Desire: Imagine life with {product_name}. It blends {keyword.lower()} innovation with {tone.lower()} flair.
 
-Action: Don’t wait – click the link below to join the movement!"""
+Action: Don't wait - click the link below to join the movement!"""
 
     if fw == "PAS":
         return f"""Problem: Finding a {product_name} that meets your needs is tough.
 
 Agitation: Mediocre options miss out on {keyword.lower()} advantages.
 
-Solution: Our {product_name} offers a {tone.lower()} fix – smart design, trending appeal."""
+Solution: Our {product_name} offers a {tone.lower()} fix - smart design, trending appeal."""
 
     if fw == "4 Ps":
         return f"""Product: {desc} with a {tone.lower()} vibe.
@@ -68,6 +68,7 @@ def generate_headline(desc: str, trends: List[str]) -> str:
 def generate_image(desc: str) -> Image.Image:
     """Generate a placeholder hero image (Pillow 12+ safe)."""
     width, height = 800, 450
+
     # Random pastel background
     base_color = tuple(random.randint(200, 255) for _ in range(3))
     image = Image.new("RGB", (width, height), base_color)
@@ -82,7 +83,7 @@ def generate_image(desc: str) -> Image.Image:
     # Caption text
     text = " ".join(desc.strip().split()[:5]) or "Your Product"
 
-    # Pillow 12: use textbbox instead of deprecated textsize
+    # Use textbbox instead of deprecated/removed textsize (Pillow 12+)
     bbox = draw.textbbox((0, 0), text, font=font)
     text_width = bbox[2] - bbox[0]
     text_height = bbox[3] - bbox[1]
@@ -156,10 +157,9 @@ if st.button("Generate Ads"):
 
                     img = deepads_generate_image(product_desc)
                 except Exception as e:
-                    st.warning(f"Gemini image generation failed, using placeholder. Error: {e}")
+                    st.warning(
+                        f"Gemini image generation failed, using placeholder. Error: {e}"
+                    )
 
             link = generate_short_link(f"ad{i + 1}")
             display_ad(fw, headline, copy, img, link)
-```
-
-You can drop this in as `deepads.py` on your `main` branch, commit, and push. That should clear the `ImageDraw.textsize` error on Streamlit Cloud and let you actually test the Nano Banana / Gemini path next.
