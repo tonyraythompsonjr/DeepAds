@@ -310,3 +310,26 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# … existing imports and copy-generation code …
+from PIL import Image  # already used in helper
+
+# Add a checkbox or separate section if you want the user to enable image generation
+generate_image = st.checkbox("Generate hero image with Gemini (Nano Banana)", value=True)
+
+if st.button("Generate Ad"):
+    # Validate input
+    if not product_desc:
+        st.error("Please enter a product description.")
+    else:
+        # Generate headline and copy via your LLM (Claude/GPT) as before …
+
+        # If image generation enabled, call the helper
+        if generate_image:
+            with st.spinner("Creating hero image…"):
+                try:
+                    hero_img = deepads_generate_image(product_desc)
+                    st.image(hero_img, caption="Hero image from Nano Banana",
+                             use_column_width=True)
+                except Exception as e:
+                    st.error(f"Image generation failed: {e}")
